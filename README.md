@@ -9,14 +9,14 @@
 [ ] LED mapping
   
   [ ] Eyes
-      - open
-      - closed
-      - emoting
+      * open
+      * closed
+      * emoting
       
   [ ] Mouth
-      - open
-      - closed
-      - emoting 
+      * open
+      * closed
+      * emoting 
       
 [ ] Lighting
  
