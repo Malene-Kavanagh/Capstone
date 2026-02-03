@@ -8,13 +8,16 @@
 [] LED mapping
   
   [] Eyes
+  
       - open
       - closed
       - emoting
   [] Mouth
+  
       - open
       - closed
       - emoting 
+      
 [] Lighting
 
 [] Other
