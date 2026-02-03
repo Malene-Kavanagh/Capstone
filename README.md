@@ -4,7 +4,9 @@
    - Parts of the neural net
      - subdivision  
 [] Eye tracker
+
 [] LED mapping
+  
   [] Eyes
       - open
       - closed
@@ -14,4 +16,5 @@
       - closed
       - emoting 
 [] Lighting
+
 [] Other
