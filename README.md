@@ -1,23 +1,23 @@
 # Capstone Project
 ## EmotiVisor
-[] Neural net
+[ ] Neural net
    - Parts of the neural net
      - subdivision  
-[] Eye tracker
+[ ] Eye tracker
 
-[] LED mapping
+[ ] LED mapping
   
-  [] Eyes
+  [ ] Eyes
   
       - open
       - closed
       - emoting
-  [] Mouth
+  [ ] Mouth
   
       - open
       - closed
       - emoting 
       
-[] Lighting
-
-[] Other
+[ ] Lighting
+ 
+[ ] Other
