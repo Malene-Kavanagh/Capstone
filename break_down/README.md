@@ -1,0 +1,37 @@
+Neural net break down
+- Libraries
+  - [ ] numpy
+  - [ ] pandas
+  - [ ] tensorflow
+  - [ ] matplotlib
+- Data collection (facial expressions)
+  - eyebrows
+    - [ ] neutral
+    - [ ] furrowed
+    - [ ] surprised
+    - [ ] single raised
+  - eyes directoin
+    - [ ] center & up
+    - [ ] center & level
+    - [ ] center & down
+    - [ ] left & up
+    - [ ] left & level
+    - [ ] left & down
+    - [ ] right & up
+    - [ ] right & level
+    - [ ] right & down
+  - eye emote
+    - [ ] neutral
+    - [ ] squint
+    - [ ] blink/ closed
+    - [ ] one eye closed/ blink
+    - [ ] lower lid raised
+    - [ ] upper lid lowered
+    - [ ] rolling eye
+  - mouth action
+    - [ ] neutral
+    - [ ] talking (sized)
+    - [ ] frown (sized)
+    - [ ] open mouth (sized)
+    - [ ] smile (sized)
+    - [ ] side smile (sized and directional)
