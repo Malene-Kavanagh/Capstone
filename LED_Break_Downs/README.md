@@ -14,4 +14,4 @@ evens and odds reverse mapped due to switch backs
 
 math modulo 22 
 
-![images/numbered_grid.png] 
+![main/images/numbered_grid.png] 
