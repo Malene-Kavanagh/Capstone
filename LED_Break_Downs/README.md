@@ -13,7 +13,3 @@ LED Strips (75 LEDs)
 evens and odds reverse mapped due to switch backs
 
 math modulo 22 
-
-
-
- 
