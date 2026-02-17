@@ -16,3 +16,6 @@
 - [ ] Other
    - [ ] Mic
    - [ ] Speaker 
+
+
+![](https://github.com/Malene-Kavanagh/Capstone/blob/main/images/allTogether.jpg)
