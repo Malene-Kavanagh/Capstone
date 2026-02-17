@@ -17,5 +17,4 @@
    - [ ] Mic
    - [ ] Speaker 
 
-
-![](https://github.com/Malene-Kavanagh/Capstone/blob/main/images/allTogether.jpg)
+<img src="images/allTogether.jpg" alt="all together" width="300" height="200">
