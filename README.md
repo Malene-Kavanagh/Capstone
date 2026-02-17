@@ -3,21 +3,16 @@
 - [ ] Neural net
    - Parts of the neural net
      - subdivision
+  - Size of saved neural net 
 
 - [ ] Eye tracker
 
 - [ ] LED mapping
-  
-- [ ] Eyes
-   * open
-   * closed
-   * emoting
-      
-- [ ] Mouth
-   * open
-   * closed
-   * emoting 
-      
+
+- [ ] Camera
+
 - [ ] Lighting
  
 - [ ] Other
+   - [ ] Mic
+   - [ ] Speaker 
