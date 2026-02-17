@@ -17,4 +17,4 @@
    - [ ] Mic
    - [ ] Speaker 
 
-<img src="images/allTogether.jpg" alt="all together" width="300" height="200">
+<img src="images/allTogether.jpg" alt="all together" width="300" height="300">
