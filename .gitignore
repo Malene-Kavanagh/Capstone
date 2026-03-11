@@ -8,3 +8,11 @@ venv/
 **/venv/
 __pycache__/
 *.pyc
+
+# Local virtual environments
+mp-env/
+**/mp-env/
+.venv/
+venv/
+**/.venv/
+**/venv/
