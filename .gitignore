@@ -1,0 +1,10 @@
+
+# Virtual environments
+mp-env/
+**/mp-env/
+.venv/
+venv/
+**/.venv/
+**/venv/
+__pycache__/
+*.pyc
