@@ -75,7 +75,7 @@ class ExpressionAnimator:
         #face layout anchors (tuned for 22x14
         cx = w // 2
         eye_y = int(h * 0.30)
-        mouth_y = int(h * 0.65)
+        mouth_y = int(h * 0.55)
         
         left_eye_x = cx - 3
         right_eye_x = cx + 3
@@ -127,14 +127,27 @@ class ExpressionAnimator:
         
         #jaw open: open a vertical gap in the middle
         if jaw > 0.15:
-            depth = int(round(1 + 3 * jaw))
-
-            bot_mid_y = min(h - 2, mid_y + depth)
-            bot_corner_y = min(h - 1, bot_mid_y + lift)
-
-            for i in range(ramp + 1):
-                y = int(round(bot_corner_y + (bot_mid_y - bot_corner_y) * (i / ramp))) if ramp > 0 else bot_mid_y
-                set_px(grid, x0 + i, y, True)
-                set_px(grid, x1 - i, y, True)
-
-            draw_hline(grid, x0 + ramp, x1 - ramp, bot_mid_y)
+            if smile > 0.2:
+                depth = int(round(1 + 3 * jaw))
+            
+                gap = max(1, depth -1)
+            
+                bot_corner_y = min(h-1, corner_y+gap)
+                
+                bot_y=min(h-1, mid_y + depth+1)
+            
+                draw_line(grid, x0, bot_corner_y, cx, bot_y)
+                
+                draw_line(grid, cx, bot_y, x1, bot_corner_y)
+            else:
+                open_amt = int(round(1 + 3 * jaw))
+                y_top = mid_y + 1
+                y_bot = min(h - 2, mid_y + open_amt)
+                
+                draw_vline(grid, cx - 2, y_top, y_bot-1)
+                draw_vline(grid, cx + 2, y_top, y_bot-1)
+                #draw_vline(grid, x0, y , mouth_y)
+                #draw_vline(grid, x1, y , mouth_y)
+                draw_hline(grid, cx- 1, cx+ 1, y_bot)
+                
+                    
