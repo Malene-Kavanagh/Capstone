@@ -127,12 +127,14 @@ class ExpressionAnimator:
         
         #jaw open: open a vertical gap in the middle
         if jaw > 0.15:
-            open_amt = int(round(2 + 3 * jaw)) #1...4 pixels
-            y_top = mid_y +1
-            y_bot = min(h-2, mid_y + open_amt) #using h -2 so bottom doesn't clip
-            
-            #carve a "mouth opening" by drawing vertical lines down from mid
-            draw_vline(grid, cx - 1, y_top, y_bot)
-            draw_vline(grid, cx + 1, y_top, y_bot)
-            
-            draw_hline(grid, cx -1, cx+1, y_bot)
+            depth = int(round(1 + 3 * jaw))
+
+            bot_mid_y = min(h - 2, mid_y + depth)
+            bot_corner_y = min(h - 1, bot_mid_y + lift)
+
+            for i in range(ramp + 1):
+                y = int(round(bot_corner_y + (bot_mid_y - bot_corner_y) * (i / ramp))) if ramp > 0 else bot_mid_y
+                set_px(grid, x0 + i, y, True)
+                set_px(grid, x1 - i, y, True)
+
+            draw_hline(grid, x0 + ramp, x1 - ramp, bot_mid_y)
