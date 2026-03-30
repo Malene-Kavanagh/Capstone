@@ -4,7 +4,7 @@ import neopixel
 import colorsys
 
 #LED strip  config
-LED_COUNT     = 154     # num of LED pixels
+LED_COUNT     = 330           # num of LED pixels
 LED_PIN       = board.D18     # GPIO pin 18
 
 pixels = neopixel.NeoPixel(
@@ -64,5 +64,4 @@ def rainbow_cycle(pixels, num_pixels, speed=0.01):
 
 while True:
     #rainbow_cycle(pixels, LED_COUNT)
-    pixels.fill((0,0,0))
-    pixels.show()
+   blink()

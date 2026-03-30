@@ -158,20 +158,34 @@ class ExpressionAnimator:
         left_eye_x = cx - 4
         right_eye_x = cx + 4
         
-        if look_in_R > 0.2 and look_in_R > look_out_R:
-            right_eye_x = cx + 2
-        elif look_out_R > 0.2 and look_out_R > look_in_R:
-            right_eye_x = cx + 6
+        #if look_in_R > 0.2 and look_in_R > look_out_R:
+        #    right_eye_x = cx + 2
+        #elif look_out_R > 0.2 and look_out_R > look_in_R:
+        #    right_eye_x = cx + 6
         
         
-        if look_in_L > 0.2 and look_in_L > look_out_L:
-            left_eye_x = cx - 2
-        elif look_out_L > 0.2 and look_out_L > look_in_L:
-            left_eye_x = cx - 6
+        #if look_in_L > 0.2 and look_in_L > look_out_L:
+        #    left_eye_x = cx - 2
+        #elif look_out_L > 0.2 and look_out_L > look_in_L:
+        #    left_eye_x = cx - 6
+        
+        #SMOOTH TEST
+        eye_range = 2.0
+        
+        right_sig = look_out_R - look_in_R
+        left_sig = look_in_L - look_out_L
+        
+        right_eye_x_target =(right_eye_x) + right_sig * eye_range
+        left_eye_x_target = (left_eye_x) + left_sig * eye_range
+        
+        alpha = 2.0
+        right_eye_x += (right_eye_x_target - right_eye_x) * alpha
+        left_eye_x += (left_eye_x_target - left_eye_x) * alpha
+        
         
         #eye: open = 6 pixels with hole, blink = horizontal line / nothing
-        self.draw_eye_O(grid, left_eye_x, eye_y, blinkL)
-        self.draw_eye_O(grid, right_eye_x, eye_y, blinkR)
+        self.draw_eye_O(grid, int(round(left_eye_x)), eye_y, blinkL)
+        self.draw_eye_O(grid, int(round(right_eye_x)), eye_y, blinkR)
         
         self.draw_mouth(grid, cx, mouth_y, smile, jaw)
         

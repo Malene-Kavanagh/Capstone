@@ -2,6 +2,9 @@ import os
 import time
 from picamera2 import Picamera2
 import cv2
+import board
+import neopixel
+import colorsys
 import numpy as np
 import mediapipe as mp
 from mediapipe.tasks import python
@@ -9,6 +12,8 @@ from mediapipe.tasks.python import vision
 
 from grid_sim import clear_grid, show_grid_bw
 from led_anim import ExpressionAnimator
+from led_map import LED_MAP
+from led_output import draw_to_led
 
 #main_demo.py
 
@@ -54,8 +59,21 @@ def main():
             main={"format": "RGB888", "size": (640, 480)}
         )
     )
+    
     picam2.start()
-   
+    
+    LED_COUNT = 330
+    LED_PIN = board.D18
+    
+    
+    pixels = neopixel.NeoPixel(
+        LED_PIN,
+        LED_COUNT,
+        brightness=0.05,
+        auto_write=False
+    )
+    
+    
     anim = ExpressionAnimator(h=H, w=W)
     
     last_print = 0.0
@@ -85,9 +103,11 @@ def main():
         grid = clear_grid(H, W)
         anim.render(grid, sliders)
         
+        draw_to_led(grid, pixels, LED_MAP)
+        
         #show LED grid demo window
         show_grid_bw(grid, scale=SCALE, title= "LED 22x14 (q to quit)")
-        show_pixels()
+        #show_pixels()
         
         #also show camera
         bgr = cv2.cvtColor(rgb, cv2.COLOR_RGB2BGR)
@@ -101,6 +121,8 @@ def main():
                 print("No face detected")
         
         if cv2.waitKey(1)& 0xFF == ord("q"):
+            pixels.fill((0,0,0))
+            pixels.show()
             break
         #if key == ord("q"):
         #    break
