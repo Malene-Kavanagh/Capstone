@@ -27,7 +27,7 @@ def set_px(grid: np.ndarray, x: int, y: int, on: bool = True):
     if 0 <= x < w and 0 <= y < h:
         grid[y, x] = 255 if on else 0
 
-def set_px_map(grid: np.ndarray, x: int, y: int, on: bool = True):
+def set_px_mapped(grid: np.ndarray, x: int, y: int, on: bool = True):
     h, w = grid.shape
     if 0 <= x < w and 0 <= y < h:
         grid[y, x] = 255 if on else 0
@@ -39,7 +39,7 @@ def draw_hline(grid: np.ndarray, x0: int, x1: int, y:int, led_map: np.ndarray = 
         if led_map is None:
             set_px(grid, x, y, True)
         else:
-            set_px_mapped(grid, led_map, x, y, True)
+            set_px_mapped(grid, x, y, True)
 
 def draw_vline(grid: np.ndarray, x: int, y0: int, y1: int, led_map: np.ndarray = None):
     if y0 > y1:
@@ -48,7 +48,7 @@ def draw_vline(grid: np.ndarray, x: int, y0: int, y1: int, led_map: np.ndarray =
         if led_map is None:
             set_px(grid, x, y, True)
         else:
-            set_px_mapped(grid, led_map, x, y, True)
+            set_px_mapped(grid, x, y, True)
         
 def draw_line(grid, x0, y0, x1, y1, led_map: np.ndarray = None):
     """Bresenham line for integer grid."""
@@ -62,7 +62,7 @@ def draw_line(grid, x0, y0, x1, y1, led_map: np.ndarray = None):
             if led_map is None:
                 grid[y0, x0] = 255
             else:
-                set_px_mapped(grid, led_map, x0, y0)
+                set_px_mapped(grid, x0, y0, True)
         if x0 == x1 and y0 == y1:
             break
         e2 = 2 * err
