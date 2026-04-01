@@ -21,7 +21,8 @@ class SmoothValue:
 class ExpressionAnimator:
     """
     renders a simple face on a 15x22 grid:
-        - eyes blink
+        - eyebrows furrow
+        - eyes blink and look around
         - mouth smiles
         - jaw open opens the mouth
     """
@@ -31,6 +32,7 @@ class ExpressionAnimator:
         
         #smoothing for jitter
         self.smile = SmoothValue(alpha=0.20)
+        self.frown = SmoothValue(alpha=0.20)
         self.jaw = SmoothValue(alpha=0.25)
         self.blinkL = SmoothValue(alpha=0.35)
         self.blinkR = SmoothValue(alpha=0.35)
@@ -40,8 +42,9 @@ class ExpressionAnimator:
         self.look_out_L = SmoothValue(alpha=0.20)
         self.look_up = SmoothValue(alpha=0.20)
         self.look_down = SmoothValue(alpha=0.20)
-        self.eyebrow_down_L = SmoothValue(alpha=0.30)
-        self.eyebrow_down_R = SmoothValue(alpha=0.30)
+        self.eyebrow_down_L = SmoothValue(alpha=0.10)
+        self.eyebrow_down_R = SmoothValue(alpha=0.10)
+        
         
     def _get(self, bs: dict, key: str, default: float = 0.0) -> float:
         return float(bs.get(key, default))
@@ -55,6 +58,9 @@ class ExpressionAnimator:
             self._get(bs, "mouthSmileLeft") + self._get(bs, "mouthSmileRight")
         )
         
+        frown_raw = 0.5 *(
+            self._get(bs, "mouthFrownLeft") + self._get(bs,"mouthFrownRight")
+            )
         #jaw open
         jaw_raw = self._get(bs, "jawOpen")
         
@@ -72,6 +78,7 @@ class ExpressionAnimator:
         
         return {
             "smile": clamp01(self.smile.update(smile_raw)),
+            "frown": clamp01(self.frown.update(frown_raw)),
             "jaw":clamp01(self.jaw.update(jaw_raw)),
             "blinkL": clamp01(self.blinkL.update(blinkL_raw)),
             "blinkR": clamp01(self.blinkR.update(blinkR_raw)),
@@ -99,21 +106,30 @@ class ExpressionAnimator:
             set_px(grid, x, y - 1, True) #bottom
             set_px(grid, x, y + 2, True) #top
             
-    def draw_mouth(self, grid, cx, mouth_y, smile, jaw):
+    def draw_mouth(self, grid, cx, mouth_y, smile, frown, jaw):
         h, w = self.h, self.w
         #mouth width and curve based on smile
-        mouth_half = int(2 + 2 * smile) #Fwidth grows with smile
+        mouth_half = int(2 + 2 * max(smile, frown)) #Fwidth grows with smile
         x0 = cx - mouth_half
         x1 = cx + mouth_half
         
-        #mouth curve: corners lift as smile increases
-        # y_offset is negative when smiling (lift corners)
-        lift = int(round(2 * smile))
-        mid_y = mouth_y +int(round(2 * (1.0 - smile))) # flatter when smiling
+        curve = smile - frown
+        
+        
+        mid_y = mouth_y +int(round(2 * (1.0 - abs(curve)))) # flatter when smiling
       
         # Corner y (same both sides)
-        corner_y = mid_y - lift
-
+        #mouth curve: corners lift as smile increases
+        # y_offset is negative when smiling (lift corners)
+        if curve >= 0:
+            lift = int(round(2 * abs(curve)))
+            corner_y = mid_y - lift
+        elif curve <= 0:
+            lift = int(round(4 * abs(curve)))
+            corner_y = mid_y + lift
+        
+        
+        
         # How far the "ramps" go inward from each corner (keep small for 14-wide)
         ramp = min(2, mouth_half)              # 1..2
 
@@ -134,17 +150,19 @@ class ExpressionAnimator:
         #jaw open: open a vertical gap in the middle
         if jaw > 0.15:
             if smile > 0.2:
-                draw_hline(grid, x0, x1, corner_y-1)
+                draw_hline(grid, x0, x1, corner_y-1, LED_MAP)
+            elif frown > 0.2:
+                draw_hline(grid, x0, x1, corner_y+1,LED_MAP)
             else:
                 open_amt = int(round(1 + 3 * jaw))
                 y_top = mid_y + 1
                 y_bot = min(h - 2, mid_y + open_amt)
                 
-                draw_vline(grid, cx - 2, y_top, y_bot-1,LED_MAP)
-                draw_vline(grid, cx + 2, y_top, y_bot-1, LED_MAP)
+                draw_vline(grid, cx - 3, y_top, y_bot-1,LED_MAP)
+                draw_vline(grid, cx + 3, y_top, y_bot-1, LED_MAP)
                 #draw_vline(grid, x0, y , mouth_y)
                 #draw_vline(grid, x1, y , mouth_y)
-                draw_hline(grid, cx- 1, cx+ 1, y_bot, LED_MAP)
+                draw_hline(grid, cx- 2, cx+ 2, y_bot, LED_MAP)
     
     def render(self, grid: np.ndarray, sliders: dict):
         """
@@ -154,6 +172,7 @@ class ExpressionAnimator:
         h, w = self.h, self.w
         
         smile = sliders["smile"]
+        frown = sliders["frown"]
         jaw = sliders["jaw"]
         blinkL = sliders["blinkL"]
         blinkR = sliders["blinkR"]
@@ -194,20 +213,20 @@ class ExpressionAnimator:
         eye_y_target = eye_y +up_down_sig * 1.5
         
         #eye: open = 6 pixels with hole, blink = horizontal line / nothing
-        if eyebrow_down_L > 0.05:
-            bd_left = left_eye_x + 1
+        if eyebrow_down_L > 0.04:
+            bd_left = left_eye_x + 2
             bd_right = left_eye_x - 2
             draw_hline(grid, int(round(bd_left)), int(round(bd_right)),int(round(eye_y_target - 1)), LED_MAP)
         
-        if eyebrow_down_R > 0.05:
-            bd_left = right_eye_x - 1
+        if eyebrow_down_R > 0.04:
+            bd_left = right_eye_x - 2
             bd_right = right_eye_x + 2
             draw_hline(grid, int(round(bd_left)), int(round(bd_right)),int(round(eye_y_target - 1)), LED_MAP)
             
         self.draw_eye_O(grid, int(round(left_eye_x)), int(round(eye_y_target)), blinkL)
         self.draw_eye_O(grid, int(round(right_eye_x)), int(round(eye_y_target)), blinkR)
         
-        self.draw_mouth(grid, cx, mouth_y, smile, jaw)
+        self.draw_mouth(grid, cx, mouth_y, smile, frown, jaw)
         
         
         
