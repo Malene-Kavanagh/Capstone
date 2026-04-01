@@ -122,7 +122,7 @@ class ExpressionAnimator:
         #mouth curve: corners lift as smile increases
         # y_offset is negative when smiling (lift corners)
         if curve >= 0:
-            lift = int(round(2 * abs(curve)))
+            lift = int(round(3 * abs(curve)))
             corner_y = mid_y - lift
         elif curve <= 0:
             lift = int(round(4 * abs(curve)))
@@ -188,7 +188,7 @@ class ExpressionAnimator:
         
         #face layout anchors (tuned for 22x14
         cx = w // 2
-        eye_y = int(h * 0.30)
+        eye_y = int(h * 0.25)
         mouth_y = int(h * 0.55)
         
         left_eye_x = cx - 4
@@ -210,7 +210,7 @@ class ExpressionAnimator:
         # Y-AXIS EYE MOVEMENT
         
         up_down_sig = look_down - look_up
-        eye_y_target = eye_y +up_down_sig * 1.5
+        eye_y_target = eye_y +up_down_sig * 1.6
         
         #eye: open = 6 pixels with hole, blink = horizontal line / nothing
         if eyebrow_down_L > 0.04:
