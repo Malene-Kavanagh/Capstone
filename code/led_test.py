@@ -4,25 +4,42 @@ import neopixel
 import colorsys
 
 #LED strip  config
-LED_COUNT     = 330           # num of LED pixels
+LED_COUNT     = 30           # num of LED pixels
 LED_PIN       = board.D18     # GPIO pin 18
+LED_PIN2      = board.D17
 
-pixels = neopixel.NeoPixel(
+pixels1 = neopixel.NeoPixel(
     LED_PIN,
     LED_COUNT,
     brightness=0.05,
     auto_write=False
     )
 
+pixels2 = neopixel.NeoPixel(
+    LED_PIN2,
+    LED_COUNT,
+    brightness=0.05,
+    auto_write=False
+    )
+def led_on():
+    pixels1.fill((50,10,50))
+    pixels2.fill((50,10,50))
+    pixels1.show()
+    pixels2.show()
+
 def blink():
     for i in range(LED_COUNT):
         #(GREEN,RED,BLUE)
-        pixels[i] = (50, 10, 50)
-    pixels.show()
+        pixels1[i] = (50, 10, 50)
+        pixels2[i] = (50, 10, 50)
+    pixels1.show()
+    pixels2.show()
     time.sleep(1)
     
-    pixels.fill((0,0,0))
-    pixels.show()
+    pixels1.fill((0,0,0))
+    pixels2.fill((0,0,0))
+    pixels1.show()
+    pixels2.show()
     time.sleep(1)
     
 def colorwheel(pos):
@@ -52,16 +69,20 @@ def colorsys_colorwheel(hue_value):
     return (int(r * 255), int(g * 255), int(b * 255))
 
 
-def rainbow_cycle(pixels, num_pixels, speed=0.01):
+def rainbow_cycle(pixels1, pixels2, num_pixels, speed=0.01):
     for i in range(255):  # Cycle through all hues
         for j in range(num_pixels):
             # Calculate the color for each pixel based on its position and current hue
             pixel_index = (i + j) % 255
             color = colorsys_colorwheel(pixel_index) # or colorwheel(pixel_index)
-            pixels[j] = color
-        pixels.show() # Update the physical LEDs
+            pixels1[j] = color
+            pixels2[j] = color
+        pixels1.show() # Update the physical LEDs
+        pixels2.show()
         time.sleep(speed)
 
 while True:
     #rainbow_cycle(pixels, LED_COUNT)
-   blink()
+    led_on()
+#    blink()
+    rainbow_cycle(pixels1, pixels2, LED_COUNT, 0.04)
