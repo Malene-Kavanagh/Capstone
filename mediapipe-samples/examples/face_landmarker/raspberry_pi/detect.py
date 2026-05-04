@@ -58,9 +58,11 @@ def run(model: str, num_faces: int,
   """
     #camera_id = Camera()
     
-    picam2 = Picamera2()
+    picam2 = Picamera2(1)
     config = picam2.create_preview_configuration(
-        main={"format": "RGB888", "size": (width,height)}
+        #main={"format": "RGB888", "size": (width,height)}
+        main={"format": "RGB888", "size": (2304, 1296)},
+        lores={"format": "RGB888", "size": (480, 360)}
     )
     picam2.configure(config)
     picam2.start()
@@ -113,9 +115,9 @@ def run(model: str, num_faces: int,
     #for the Picamera
     while True:
         #Picamera2 returns RGB already with config above
-        rgb_image = picam2.capture_array()
+        rgb_image = picam2.capture_array("lores")
         image = cv2.cvtColor(rgb_image, cv2.COLOR_RGB2BGR) # for drawing + imshow
-        
+        image = cv2.rotate(image, cv2.ROTATE_90_COUNTERCLOCKWISE)
         # This is before Picamera2 
         #success, image = cap.read()
         #if not success:
@@ -123,7 +125,7 @@ def run(model: str, num_faces: int,
         #        'ERROR: Unable to read from webcam. Please verify your webcam settings.'
         #    )
 
-        image = cv2.flip(image, 1)
+        #image = cv2.flip(image, 1)
 
         # Convert the image from BGR to RGB as required by the TFLite model.
         #rgb_image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)

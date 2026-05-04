@@ -5,7 +5,7 @@ import colorsys
 
 #LED strip  config
 LED_COUNT     = 30           # num of LED pixels
-LED_PIN       = board.D18     # GPIO pin 18
+LED_PIN       = board.D27     # GPIO pin 18
 LED_PIN2      = board.D17
 
 pixels1 = neopixel.NeoPixel(
@@ -85,4 +85,4 @@ while True:
     #rainbow_cycle(pixels, LED_COUNT)
     led_on()
 #    blink()
-    rainbow_cycle(pixels1, pixels2, LED_COUNT, 0.04)
+    #rainbow_cycle(pixels1, pixels2, LED_COUNT, 0.04)
